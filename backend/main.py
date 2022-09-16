@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from os import path
 
 test_str = "There was a miller whose only inheritance to his three sons was his mill, his donkey, and his cat. The division was soon made. They hired neither a clerk nor an attorney, for they would have eaten up all the poor patrimony. The eldest took the mill, the second the donkey, and the youngest nothing but the cat."
 
@@ -7,9 +8,17 @@ def sentence_tokenizer(text: str) -> str:
         yield sentence_token
 
 
+def file_tokenizer(file_to_test: str) -> str:
+    with open((path.join("test-books", file_to_test))) as story_file:
+        for line in story_file:
+            if line.strip():
+                yield line
+
 def main():
-    for sentence in sentence_tokenizer(test_str):
-        print(sentence)
+    file_to_test = "golden-goose.txt"
+
+    for line in file_tokenizer(file_to_test):
+        print(line)
 
 
 
