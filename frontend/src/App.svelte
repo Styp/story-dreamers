@@ -1,24 +1,21 @@
 <script lang="ts">
 import Textinput from "./lib/components/Textinput.svelte";
 import Button from "./lib/components/Button.svelte";
-import {text, totalPages, currentPage} from "./lib/stores";
-import {get_page} from "./lib/api";
+import {text, totalPages, currentPage, pages} from "./lib/stores";
+import {send_text_to_server} from "./lib/api";
 import Story from "./lib/components/Story.svelte";
+import {get} from "svelte/store";
 
 let currentPageValue;
 
-currentPage.subscribe(value => currentPageValue=value)
+currentPage.subscribe(value =>  {
+    currentPageValue=value
+})
 
 async function send_text(){
-    const mock_response = {
-        firstPage: '/fake-responses/001.json',
-        totalPages: 3
-    }
-    const response = mock_response  // await send_text_to_server(get(text))
-
-    totalPages.set(response.totalPages)
-    currentPage.set(await get_page(response.firstPage))
-
+    const response = await send_text_to_server(get(text))
+    totalPages.set(response.data.length)
+    pages.set(response.data)
 }
 
 </script>
