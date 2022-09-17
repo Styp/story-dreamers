@@ -1,6 +1,5 @@
 <script>
-    import {currentPage, currentPageNumber, text, totalPages} from "../stores.ts";
-    import {nextPage, previousPage} from "../api.ts";
+    import {currentPage, currentPageNumber, reset_story, text, totalPages} from "../stores.ts";
     import Button from "./Button.svelte";
     import Booklet from "./Booklet.svelte";
 
@@ -13,22 +12,18 @@
     totalPages.subscribe(value => totalPagesValue=value)
 
     async function next(){
-        if(currentPageValue.next){
-            currentPage.set(await nextPage(currentPageValue))
+        if(currentPageValue.hasNext){
             currentPageNumber.update(n => n+1)
         }
     }
     async function previous(){
-        if(currentPageValue.previous){
-            currentPage.set(await previousPage(currentPageValue))
+        if(currentPageValue.hasPrevious){
             currentPageNumber.update(n => n-1)
         }
     }
 
     async function reset(){
-        text.set('')
-        currentPage.set(null)
-        currentPageNumber.set(1)
+        reset_story()
     }
 </script>
 
@@ -38,15 +33,15 @@
     </div>
     <div class="col-span-6 col-start-4 grid grid-cols-9">
         <div class="col-span-3 flex justify-end">
-            {#if currentPageValue.previous}
+            {#if currentPageValue.hasPrevious}
                 <Button on:click={previous}>Previous</Button>
             {/if}
         </div>
-        <div class="col-span-3 flex justify-center">
-            Page {currentPageNumberValue}/{totalPagesValue}
+        <div class="col-span-3 flex justify-center items-center">
+            Page {currentPageNumberValue+1}/{totalPagesValue}
         </div>
         <div class="col-span-3 flex justify-start">
-            {#if currentPageValue.next}
+            {#if currentPageValue.hasNext}
                 <Button on:click={next}>Next</Button>
             {/if}
         </div>

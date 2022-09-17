@@ -1,17 +1,15 @@
+import {currentPageNumber} from "./stores";
+import {get} from "svelte/store";
 
-const host = 'http://127.0.0.1:8000'
-const endpoint = 'magic'
+const host = '' // 'http://127.0.0.1:8080'
+const endpoint = 'fake-responses/text-processing.json'
+const imageEndpoint = 'fake-responses/001.json'
 
-export interface ServerResponse{
-    firstPage: string
-    totalPages: number
-}
-
-export interface ServerPage {
+export interface BookletPage {
     snippet: string
     image: string
-    next?: string|null
-    previous?: string|null
+    hasNext: boolean
+    hasPrevious: boolean
 }
 
 
@@ -23,12 +21,12 @@ export interface ProcessedTextItem{
 export interface ProcessedTextResponse{
     data: ProcessedTextItem[]
 }
-export interface ImagePage {
+export interface ImagePrompt {
     image: string
 }
 
 
-export async function send_text_to_server(text: string): Promise<ServerResponse>{
+export async function send_text_to_server(text: string): Promise<ProcessedTextResponse>{
     return fetch(`${host}/${endpoint}`, {
         method: 'POST',
         body: JSON.stringify({
@@ -39,23 +37,14 @@ export async function send_text_to_server(text: string): Promise<ServerResponse>
     )
 }
 
-export async function nextPage(page: ServerPage): Promise<ServerPage>{
-    if(page.next){
-        return await get_page(page.next)
-    }
-    return null
-}
-
-export async function previousPage(page: ServerPage): Promise<ServerPage>{
-    if(page.previous){
-        return await get_page(page.previous)
-    }
-    return null
-}
-
-export async function get_page(url): Promise<ServerPage>{
-    return fetch(url)
-        .then(
+export async function get_image(prompt: string): Promise<ImagePrompt>{
+    const fakeEndpoint = `fake-responses/00${get(currentPageNumber)+1}.json`
+    return fetch(`${host}/${fakeEndpoint}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            prompt: prompt
+        })
+    }).then(
             response => response.json()
         )
 }
