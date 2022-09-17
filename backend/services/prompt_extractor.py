@@ -4,17 +4,19 @@ import numpy as np
 from rake_nltk import Rake
 import nltk
 import yake
+from transformers import pipeline
 
 
 class PromptExtractor:
-    MAX_SENTENCE_COUNT = 8
-    MIN_SENTENCE_COUNT = 3
+    MAX_SENTENCE_COUNT = 10
+    MIN_SENTENCE_COUNT = 5
 
     def __init__(self, style: str = "oil painting"):
         nltk.download('punkt')
         nltk.download('stopwords')
         self.overall_extractor = yake.KeywordExtractor(n=1, dedupLim=0.5, top=20, features=None)
         self.style = style
+        self.summarizer = pipeline("summarization", model="facebook/bart-large-xsum")
 
     def _extract_prompt_with_nltk(self, text: str) -> str:
         rake_nltk_var = Rake()
@@ -29,14 +31,21 @@ class PromptExtractor:
             [kw_extractor.extract_keywords(text)[0][0], kw_extractor.extract_keywords(text)[1][0]])
         return extracted_words
 
+    def _extract_prompt_with_bart(self, text: str) -> str:
+        return self.summarizer(text, min_length=5)[0]["summary_text"]
+
+    def _extract_prompt_with_bart_extended(self, text: str) -> str:
+        kw_extractor = yake.KeywordExtractor(n=10, dedupLim=0.8, top=1, features=None)
+        return kw_extractor.extract_keywords(self._extract_prompt_with_bart(text))[0][0]
+
     def _keywords_relevant_overall(self, extracted_keywords: str, whole_text_keywords: [tuple[float, str]]):
         overall_important_keywords = np.array(whole_text_keywords)[:, 0]
         importance = 0
         for keyword in extracted_keywords.split(" "):
             if keyword in overall_important_keywords:
-                importance += len(whole_text_keywords) - np.where(overall_important_keywords == keyword)[0]
+                importance += 1
         print("importance", importance, "for", extracted_keywords)
-        return importance > 20
+        return importance > 2
 
     def extract_paragraphs_with_prompts(self, whole_text: str) -> Dict[str, str]:
         paragraph_prompts = {}
@@ -62,8 +71,7 @@ class PromptExtractor:
         return self._remove_duplicates(paragraph_prompts)
 
     def extract_keywords(self, paragraph):
-        extracted_keywords = self._extract_prompt_with_yake(
-            paragraph) + " " + self._extract_prompt_with_nltk(paragraph)
+        extracted_keywords = self._extract_prompt_with_bart_extended(paragraph)
         return extracted_keywords
 
     def add_keywords_to_paragraph_prompts(self, extracted_keywords, paragraph, paragraph_prompts):

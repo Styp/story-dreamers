@@ -30,13 +30,14 @@ def recreate_image_directory():
 
 def main():
     prompt_extractor = PromptExtractor()
-    file_to_test = "cinderella.txt"
+    file_to_test = "haensel.txt"
     image_directory = recreate_image_directory()
     paragraph_prompts = file_tokenizer(file_to_test, prompt_extractor)
     sentence_index = 0
     for text, sentence in paragraph_prompts.items():
         try:
-            print("text: ", text, "prompt:", sentence)
+            print("text: ", text)
+            print("prompt:", sentence)
             images = fetch_image(sentence)
             for index, image in enumerate(images):
                 image.save(os.path.join(image_directory, f'{sentence_index:03d}-{index:03d}.png'))
