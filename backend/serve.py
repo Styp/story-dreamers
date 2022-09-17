@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import Response, StreamingResponse
 
 
-from serivces.stable_diffusion_consumer import StableDiffusionConsumer
+from services.stable_diffusion_consumer import StableDiffusionConsumer
 
 app = FastAPI()
 
