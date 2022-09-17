@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import Response
+from fastapi.responses import Response, StreamingResponse
 
 
 from serivces.stable_diffusion_consumer import StableDiffusionConsumer
@@ -17,7 +17,7 @@ async def image_from_promt(prompt: str):
     consumer = StableDiffusionConsumer()
     image_bytes = next(consumer.fetch_image(prompt))
 
-    return Response(content=image_bytes, media_type="image/png")
+    return StreamingResponse(image_bytes, media_type="image/png")
 
 @app.post("/base64FromPrompt")
 async def base64_from_prompt(prompt: str) -> str:

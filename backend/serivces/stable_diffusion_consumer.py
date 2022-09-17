@@ -32,4 +32,4 @@ class StableDiffusionConsumer(object):
 
     def parse_image(self, image_string: str):
         image_data = re.sub('^data:image/.+;base64,', '', image_string)
-        return image_data
+        return BytesIO(base64.b64decode(image_data))
