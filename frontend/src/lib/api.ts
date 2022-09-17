@@ -40,7 +40,11 @@ export async function send_text_to_server(text: string): Promise<ProcessedTextIt
 export async function get_image(prompt: string): Promise<ImagePrompt>{
     const cacheValue = get(promptCache)
     if(cacheValue[prompt]){
+        console.log('cache hit')
         return cacheValue[prompt]
+    }
+    else{
+        console.log('cache miss')
     }
     return await fetch(`${host}/${imageEndpoint}`, {
         method: 'POST',

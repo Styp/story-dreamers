@@ -1,5 +1,5 @@
 <script>
-    import {currentPage, currentPageNumber, reset_story, text, totalPages} from "../stores.ts";
+    import {currentPage, currentPageNumber, reset_story, text, totalPages, preloadImages} from "../stores.ts";
     import Button from "./Button.svelte";
     import Booklet from "./Booklet.svelte";
 
@@ -10,7 +10,8 @@
     currentPage.subscribe(value => currentPageValue=value)
     currentPageNumber.subscribe(value => currentPageNumberValue=value)
     totalPages.subscribe(value => totalPagesValue=value)
-
+    preloadImages.subscribe(() => {})
+    
     async function next(){
         if(currentPageValue.hasNext){
             currentPageNumber.update(n => n+1)
