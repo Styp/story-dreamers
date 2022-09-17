@@ -11,19 +11,27 @@ def get_summary(text: str) -> str:
     rake_nltk_var = Rake()
     rake_nltk_var.extract_keywords_from_text(text)
     keyword_extracted = rake_nltk_var.get_ranked_phrases()[0]
+    print(keyword_extracted)
+    return keyword_extracted + " oil painting"
 
-    return keyword_extracted
 
 def sentence_tokenizer(text: str) -> str:
     for sentence_token in text.split("."):
         yield sentence_token
 
+
 def file_tokenizer(file_to_test: str) -> str:
     with open((path.join("test-books", file_to_test))) as story_file:
-        for line in story_file:
-            if line.strip():
-                yield get_summary(line)
 
+        paragraph = ""
+        line_with_content_counter = 0
+        for idx, line in enumerate(story_file):
+            if line.strip():
+                line_with_content_counter += 1
+                paragraph += line
+            if line_with_content_counter == 5:
+                line_with_content_counter = 0
+                yield get_summary(paragraph)
 
 def main():
     nltk.download('punkt')
@@ -36,5 +44,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
