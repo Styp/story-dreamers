@@ -44,6 +44,6 @@ class PromptExtractor:
                 words = extracted_keywords.lower().split()
                 deduplicated_prompt = " ".join(sorted(set(words), key=words.index))
                 print("extracted: ", deduplicated_prompt)
-                paragraph_prompts[paragraph] = deduplicated_prompt
+                paragraph_prompts[paragraph] = deduplicated_prompt + " " + self.style
                 paragraph = ""
         return paragraph_prompts
