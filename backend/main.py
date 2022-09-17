@@ -2,6 +2,7 @@
 import os
 import shutil
 from os import path
+from typing import Dict
 
 from backend.prompt_extractor import PromptExtractor
 from fetch_images import fetch_image
@@ -13,21 +14,9 @@ def sentence_tokenizer(text: str) -> str:
         yield sentence_token
 
 
-def file_tokenizer(file_to_test: str, prompt_extractor: PromptExtractor) -> str:
+def file_tokenizer(file_to_test: str, prompt_extractor: PromptExtractor) -> Dict[str, str]:
     with open((path.join("test-books", file_to_test))) as story_file:
-
-        paragraph = ""
-        line_with_content_counter = 0
-        for idx, line in enumerate(story_file):
-            if line.strip():
-                line_with_content_counter += 1
-                paragraph += line
-            if line_with_content_counter == 3:
-                line_with_content_counter = 0
-                input = paragraph
-                paragraph = ""
-                yield prompt_extractor.extract_prompt(input)
-
+        return prompt_extractor.extract_paragraphs_with_prompts(story_file.read())
 
 def recreate_image_directory():
     file_path = os.path.dirname(os.path.realpath(__file__))
@@ -41,8 +30,9 @@ def main():
     prompt_extractor = PromptExtractor()
     file_to_test = "snowwhite.txt"
     image_directory = recreate_image_directory()
-    for sentence_index, sentence in enumerate(file_tokenizer(file_to_test, prompt_extractor)):
+    for sentence_index, sentence in enumerate(file_tokenizer(file_to_test, prompt_extractor).values()):
         try:
+            print("sentence: ", sentence)
             images = fetch_image(sentence)
             for index, image in enumerate(images):
                 image.save(os.path.join(image_directory, f'{sentence_index:03d}-{index:03d}.png'))
