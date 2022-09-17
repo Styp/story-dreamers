@@ -15,6 +15,9 @@ module.exports = {
       boxShadow: {
         "booklet-r": '30px 0px 40px -40px rgba(0,0,0,0.75) inset',
         "booklet-l": '-30px 0px 40px -40px rgba(0,0,0,0.75) inset'
+      },
+      backgroundImage: {
+        "paper-texture": 'url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png")'
       }
     },
   },

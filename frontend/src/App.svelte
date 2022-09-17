@@ -3,7 +3,7 @@ import Textinput from "./lib/components/Textinput.svelte";
 import Button from "./lib/components/Button.svelte";
 import {text, totalPages, currentPage} from "./lib/stores";
 import {get_page} from "./lib/api";
-import Page from "./lib/components/Page.svelte";
+import Story from "./lib/components/Story.svelte";
 
 let currentPageValue;
 
@@ -25,7 +25,7 @@ async function send_text(){
 
 <main>
     {#if currentPageValue}
-        <Page></Page>
+        <Story></Story>
     {:else}
         <h1 class="text-6xl tracking-wider text-center pt-4 pb-24">Story Dreamers</h1>
         <div class="grid grid-cols-2 gap-8">
