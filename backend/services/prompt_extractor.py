@@ -1,5 +1,3 @@
-from typing import Dict
-
 import numpy as np
 from rake_nltk import Rake
 import nltk
@@ -57,13 +55,13 @@ class PromptExtractor:
         print("importance", importance, "for", extracted_keywords)
         return importance > 2
 
-    def extract_paragraphs_with_prompts(self, whole_text: str) -> Dict[str, str]:
+    def extract_paragraphs_with_prompts(self, whole_text: str):
         paragraph_prompts = {}
         paragraph = []
         sentence_counter = 0
         lines = whole_text.splitlines()
 
-        whole_text_keywords: Dict[str, str] = self.overall_extractor.extract_keywords(whole_text)
+        whole_text_keywords = self.overall_extractor.extract_keywords(whole_text)
         print("overall keywords", whole_text_keywords)
 
         non_empty_lines = " ".join([line for line in lines if line.strip() != ""])
