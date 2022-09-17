@@ -26,6 +26,13 @@ export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumb
     }
 })
 
+export const preloadImages = asyncDerived([pages], async ([pages]) => {
+    for(const [index, page] of pages.entries()){
+        await get_image(pages[index].prompt)
+    }
+})
+
+export const promptCache = writable<{[key: string]: {image: string}}>({})
 
 export function reset_story(){
     text.set('')
