@@ -26,6 +26,7 @@ export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumb
     }
 })
 
+export const promptCache = writable<{[key: string]: {image: string}}>({})
 
 export function reset_story(){
     text.set('')

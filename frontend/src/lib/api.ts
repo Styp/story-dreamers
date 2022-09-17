@@ -1,4 +1,4 @@
-import {currentPageNumber} from "./stores";
+import {currentPageNumber, promptCache} from "./stores";
 import {get} from "svelte/store";
 
 const host = 'http://127.0.0.1:8080'
@@ -24,7 +24,7 @@ export interface ImagePrompt {
 
 
 export async function send_text_to_server(text: string): Promise<ProcessedTextItem[]>{
-    return fetch(`${host}/${textEndpoint}`, {
+    return await fetch(`${host}/${textEndpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -38,7 +38,11 @@ export async function send_text_to_server(text: string): Promise<ProcessedTextIt
 }
 
 export async function get_image(prompt: string): Promise<ImagePrompt>{
-    return fetch(`${host}/${imageEndpoint}`, {
+    const cacheValue = get(promptCache)
+    if(cacheValue[prompt]){
+        return cacheValue[prompt]
+    }
+    return await fetch(`${host}/${imageEndpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -46,7 +50,13 @@ export async function get_image(prompt: string): Promise<ImagePrompt>{
         body: JSON.stringify({
             prompt: prompt
         })
-    }).then(
+    })
+        .then(
             response => response.json()
+        )
+        .then(
+            response => {
+                promptCache.update(cache => {cache[prompt] = response; return cache});
+                return response}
         )
 }
