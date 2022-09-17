@@ -7,8 +7,8 @@ import yake
 
 
 class PromptExtractor:
-    MAX_SENTENCE_COUNT = 10
-    MIN_SENTENCE_COUNT = 5
+    MAX_SENTENCE_COUNT = 8
+    MIN_SENTENCE_COUNT = 3
 
     def __init__(self, style: str = "oil painting"):
         nltk.download('punkt')
@@ -24,7 +24,7 @@ class PromptExtractor:
         return prompt
 
     def _extract_prompt_with_yake(self, text: str) -> str:
-        kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.5, top=2, features=None)
+        kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.1, top=2, features=None)
         extracted_words = " ".join(
             [kw_extractor.extract_keywords(text)[0][0], kw_extractor.extract_keywords(text)[1][0]])
         return extracted_words
@@ -36,27 +36,26 @@ class PromptExtractor:
             if keyword in overall_important_keywords:
                 importance += len(whole_text_keywords) - np.where(overall_important_keywords == keyword)[0]
         print("importance", importance, "for", extracted_keywords)
-        return importance > 30
+        return importance > 20
 
     def extract_paragraphs_with_prompts(self, whole_text: str) -> Dict[str, str]:
-        print(whole_text)
         paragraph_prompts = {}
         paragraph = []
         sentence_counter = 0
         lines = whole_text.splitlines()
 
         whole_text_keywords: Dict[str, str] = self.overall_extractor.extract_keywords(whole_text)
+        print("overall keywords", whole_text_keywords)
+
         non_empty_lines = " ".join([line for line in lines if line.strip() != ""])
         for idx, sentence in enumerate(non_empty_lines.split(".")):
             sentence_counter += 1
             paragraph.append(sentence)
             if sentence_counter >= PromptExtractor.MIN_SENTENCE_COUNT:
                 extracted_keywords = self.extract_keywords(" ".join(paragraph))
-                if sentence_counter > PromptExtractor.MAX_SENTENCE_COUNT:
-                    paragraph = paragraph[1:]
-                elif self._keywords_relevant_overall(extracted_keywords,
-                                                   whole_text_keywords):
 
+                if self._keywords_relevant_overall(extracted_keywords,
+                                                   whole_text_keywords) or sentence_counter > PromptExtractor.MAX_SENTENCE_COUNT:
                     self.add_keywords_to_paragraph_prompts(extracted_keywords, " ".join(paragraph), paragraph_prompts)
                     sentence_counter = 0
                     paragraph = []

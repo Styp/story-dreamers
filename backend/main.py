@@ -30,7 +30,7 @@ def recreate_image_directory():
 
 def main():
     prompt_extractor = PromptExtractor()
-    file_to_test = "snowwhite.txt"
+    file_to_test = "cinderella.txt"
     image_directory = recreate_image_directory()
     paragraph_prompts = file_tokenizer(file_to_test, prompt_extractor)
     sentence_index = 0
