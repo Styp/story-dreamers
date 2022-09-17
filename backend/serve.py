@@ -35,10 +35,10 @@ def image_from_promt(payload: PromptPayload) -> StreamingResponse:
     return StreamingResponse(consumer.parse_to_bytesio(image_bytes), media_type="image/png")
 
 @app.post("/base64FromPrompt")
-async def base64_from_prompt(payload: PromptPayload) -> JSONResponse:
+def base64_from_prompt(payload: PromptPayload) -> JSONResponse:
     consumer = StableDiffusionConsumer()
     img_json = {
-        "image": next(consumer.fetch_image(payload.prompt))
+        "image": consumer.fetch_image(payload.prompt)
     }
 
     return JSONResponse(content=img_json)
