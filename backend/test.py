@@ -1,14 +1,14 @@
-import io
+import os
+
 from google.cloud import vision
 
-vision_client = vision()
-file_name = 'images/000-000.png'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-vision-key.json"
 
-with io.open(file_name, 'rb') as image_file:
-    content = image_file.read()
-    image = vision_client.image(
-        content=content, )
 
-labels = image.detect_labels()
-for label in labels:
-    print(label.description)
+client = vision.ImageAnnotatorClient()
+response = client.annotate_image({
+  'image': {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}},
+  'features': [{'type_': vision.Feature.Type.FACE_DETECTION}]
+})
+
+print(response)
