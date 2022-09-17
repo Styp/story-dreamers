@@ -2,28 +2,18 @@
 import os
 import shutil
 from os import path
-from rake_nltk import Rake
-import nltk
+
+from backend.prompt_extractor import PromptExtractor
 from fetch_images import fetch_image
 
 test_str = "There was a miller whose only inheritance to his three sons was his mill, his donkey, and his cat. The division was soon made. They hired neither a clerk nor an attorney, for they would have eaten up all the poor patrimony. The eldest took the mill, the second the donkey, and the youngest nothing but the cat. + oil painting"
-
-
-def get_summary(text: str) -> str:
-    print("input: ", text)
-    rake_nltk_var = Rake()
-    rake_nltk_var.extract_keywords_from_text(text)
-    keyword_extracted = rake_nltk_var.get_ranked_phrases()[0]
-    print(keyword_extracted)
-    return keyword_extracted + " oil painting"
-
 
 def sentence_tokenizer(text: str) -> str:
     for sentence_token in text.split("."):
         yield sentence_token
 
 
-def file_tokenizer(file_to_test: str) -> str:
+def file_tokenizer(file_to_test: str, prompt_extractor: PromptExtractor) -> str:
     with open((path.join("test-books", file_to_test))) as story_file:
 
         paragraph = ""
@@ -36,7 +26,7 @@ def file_tokenizer(file_to_test: str) -> str:
                 line_with_content_counter = 0
                 input = paragraph
                 paragraph = ""
-                yield get_summary(input)
+                yield prompt_extractor.get_summary(input)
 
 
 def recreate_image_directory():
@@ -48,11 +38,10 @@ def recreate_image_directory():
 
 
 def main():
-    nltk.download('punkt')
-    nltk.download('stopwords')
+    prompt_extractor = PromptExtractor()
     file_to_test = "snowwhite.txt"
     image_directory = recreate_image_directory()
-    for sentence_index, sentence in enumerate(file_tokenizer(file_to_test)):
+    for sentence_index, sentence in enumerate(file_tokenizer(file_to_test, prompt_extractor)):
         try:
             images = fetch_image(sentence)
             for index, image in enumerate(images):
