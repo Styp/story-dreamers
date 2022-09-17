@@ -1,8 +1,11 @@
+anyio @ file:///home/conda/feedstock_root/build_artifacts/anyio_1660053721269/work/dist
 certifi==2022.9.14
 charset-normalizer==2.1.1
-click==8.1.3
+click @ file:///Users/runner/miniforge3/conda-bld/click_1651215220522/work
+fastapi @ file:///home/conda/feedstock_root/build_artifacts/fastapi_1663277984744/work
 filecache==0.81
 filelock==3.8.0
+h11 @ file:///home/conda/feedstock_root/build_artifacts/h11_1652727116927/work
 huggingface-hub==0.9.1
 idna==3.4
 jellyfish==0.9.0
@@ -12,18 +15,22 @@ nltk==3.7
 numpy==1.23.3
 packaging==21.3
 Pillow==9.2.0
+pydantic @ file:///Users/runner/miniforge3/conda-bld/pydantic_1662443163175/work
 pyparsing==3.0.9
 PyYAML==6.0
 rake-nltk==1.0.6
 regex==2022.9.13
 requests==2.28.1
 segtok==1.5.11
+sniffio @ file:///home/conda/feedstock_root/build_artifacts/sniffio_1662051266223/work
+starlette @ file:///home/conda/feedstock_root/build_artifacts/starlette-recipe_1656459462991/work
 tabulate==0.8.10
 tokenizers==0.12.1
 torch==1.12.1
 torchvision==0.13.1
 tqdm==4.64.1
 transformers==4.22.1
-typing_extensions==4.3.0
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1656706066251/work
 urllib3==1.26.12
+uvicorn @ file:///Users/runner/miniforge3/conda-bld/uvicorn-split_1661373709745/work
 yake==0.4.8

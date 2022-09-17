@@ -4,7 +4,6 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import Response, StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 
 from dtos.Payload import PromptPayload, TextPayload
 from services.prompt_extractor import PromptExtractor
