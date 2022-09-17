@@ -46,7 +46,7 @@ class PromptExtractor:
         kw_extractor = yake.KeywordExtractor(n=10, dedupLim=0.8, top=1, features=None)
         return kw_extractor.extract_keywords(PromptExtractor._extract_prompt_with_bart(text))[0][0]
 
-    def _keywords_relevant_overall(self, extracted_keywords: str, whole_text_keywords: [tuple[float, str]]):
+    def _keywords_relevant_overall(self, extracted_keywords: str, whole_text_keywords):
         overall_important_keywords = np.array(whole_text_keywords)[:, 0]
         importance = 0
         for keyword in extracted_keywords.split(" "):
