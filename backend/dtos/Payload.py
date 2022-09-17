@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
 
-class Payload(BaseModel):
+class PromptPayload(BaseModel):
     prompt: str
+
+
+class TextPayload(BaseModel):
+    text: str
