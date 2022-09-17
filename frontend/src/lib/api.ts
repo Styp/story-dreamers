@@ -2,7 +2,7 @@ import {currentPageNumber} from "./stores";
 import {get} from "svelte/store";
 
 const host = 'http://127.0.0.1:8080'
-const textEndpoint = 'fake-responses/text-processing.json' // 'promptsFromText'
+const textEndpoint = 'promptsFromText' // 'promptsFromText'
 const imageEndpoint = 'base64FromPrompt' // 'base64FromPrompt'
 
 export interface BookletPage {
@@ -18,16 +18,13 @@ export interface ProcessedTextItem{
     prompt: string
 }
 
-export interface ProcessedTextResponse{
-    data: ProcessedTextItem[]
-}
 export interface ImagePrompt {
     image: string
 }
 
 
-export async function send_text_to_server(text: string): Promise<ProcessedTextResponse>{
-    return fetch(`/${textEndpoint}`, {
+export async function send_text_to_server(text: string): Promise<ProcessedTextItem[]>{
+    return fetch(`${host}/${textEndpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

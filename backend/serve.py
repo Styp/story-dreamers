@@ -45,9 +45,10 @@ async def base64_from_prompt(payload: PromptPayload) -> JSONResponse:
     return JSONResponse(content=img_json)
 
 @app.post("/promptsFromText")
-async def prompts_from_text(text_payload: TextPayload) -> Dict[str, str]:
+async def prompts_from_text(text_payload: TextPayload) -> [Dict]:
     prompt_extractor = PromptExtractor()
-    return prompt_extractor.extract_paragraphs_with_prompts(text_payload.text)
+    prompts = prompt_extractor.extract_paragraphs_with_prompts(text_payload.text)
+    return [{"snippet": key, "prompt": value} for key, value in prompts.items()]
 
 
 if __name__ == "__main__":

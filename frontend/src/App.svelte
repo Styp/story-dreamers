@@ -14,8 +14,8 @@ currentPage.subscribe(value =>  {
 
 async function send_text(){
     const response = await send_text_to_server(get(text))
-    totalPages.set(response.data.length)
-    pages.set(response.data)
+    totalPages.set(response.length)
+    pages.set(response)
 }
 
 </script>
