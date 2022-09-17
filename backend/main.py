@@ -32,12 +32,15 @@ def main():
     prompt_extractor = PromptExtractor()
     file_to_test = "snowwhite.txt"
     image_directory = recreate_image_directory()
-    for sentence_index, sentence in enumerate(file_tokenizer(file_to_test, prompt_extractor).values()):
+    paragraph_prompts = file_tokenizer(file_to_test, prompt_extractor)
+    sentence_index = 0
+    for text, sentence in paragraph_prompts.items():
         try:
-            print("sentence: ", sentence)
+            print("text: ", text, "prompt:", sentence)
             images = fetch_image(sentence)
             for index, image in enumerate(images):
                 image.save(os.path.join(image_directory, f'{sentence_index:03d}-{index:03d}.png'))
+            sentence_index += 1
         except Exception as e:
             print(e)
 

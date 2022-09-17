@@ -3,6 +3,7 @@ from os import path
 
 from backend.services.prompt_extractor import PromptExtractor
 
+
 class MyTestCase(unittest.TestCase):
 
     def test_relevant_story_keyword_extraction(self):
@@ -21,7 +22,7 @@ class MyTestCase(unittest.TestCase):
                 print(f"Word {word} was missing in prompts")
                 missing_words += 1
 
-        accurracy = 100 -(100 / len(relevant_story_words) * missing_words)
+        accurracy = 100 - (100 / len(relevant_story_words) * missing_words)
         print("missing words", missing_words, "of", len(relevant_story_words))
         self.assertGreater(accurracy, 80)
 
