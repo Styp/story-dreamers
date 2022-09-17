@@ -3,6 +3,7 @@ from typing import Dict
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import Response, StreamingResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from dtos.Payload import Payload
@@ -10,6 +11,17 @@ from services.prompt_extractor import PromptExtractor
 from services.stable_diffusion_consumer import StableDiffusionConsumer
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 async def root():
