@@ -2,6 +2,7 @@ from typing import Dict
 
 from rake_nltk import Rake
 import nltk
+import yake
 
 
 class PromptExtractor:
@@ -18,6 +19,13 @@ class PromptExtractor:
         prompt = keyword_extracted + " " + self.style
         return prompt
 
+    def _extract_prompt_with_yake(self, text: str) -> str:
+        print("input: ", text)
+        kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.9, top=1, features=None)
+        extracted_words = " ".join(kw_extractor.extract_keywords(text)[:1])
+        print("extracted:", extracted_words)
+        return extracted_words + " " + self.style
+
     def extract_paragraphs_with_prompts(self, whole_text: str) -> Dict[str, str]:
         paragraph_prompts = {}
         paragraph = ""
@@ -28,6 +36,6 @@ class PromptExtractor:
                 paragraph += line
             if line_with_content_counter == 3:
                 line_with_content_counter = 0
-                paragraph_prompts[paragraph] = self._extract_prompt(paragraph)
+                paragraph_prompts[paragraph] = self._extract_prompt_with_yake(paragraph)
                 paragraph = ""
         return paragraph_prompts

@@ -1,12 +1,12 @@
 import unittest
 from os import path
 
-from backend.prompt_extractor import PromptExtractor
+from backend.services.prompt_extractor import PromptExtractor
 
 
 class MyTestCase(unittest.TestCase):
 
-    def test_something(self):
+    def test_relevant_story_keyword_extraction(self):
         file_to_test = "snowwhite-test.txt"
         prompt_extractor = PromptExtractor()
         result = {}
@@ -15,14 +15,16 @@ class MyTestCase(unittest.TestCase):
 
         all_prompts = " ".join(str(x) for x in result.values())
         print(all_prompts)
-        self.assertTrue("princess" in all_prompts)
-        self.assertTrue("queen" in all_prompts)
-        self.assertTrue("woods" in all_prompts)
-        self.assertTrue("wolves" in all_prompts)
-        self.assertTrue("cottage" in all_prompts)
-        self.assertTrue("Dwarfs" in all_prompts)
-        self.assertTrue("apple" in all_prompts)
+        relevant_story_words = ["princess", "queen", "woods", "castle", "cottage", "bed", "apple"]
+        missing_words = 0
+        for word in relevant_story_words:
+            if word not in all_prompts:
+                print(f"Word {word} was missing in prompts")
+                missing_words += 1
 
+        accurracy = 100 % len(relevant_story_words) * missing_words
+        print("missing words", missing_words, "of", len(relevant_story_words))
+        self.assertGreater(accurracy, 80)
 
-if __name__ == '__main__':
-    unittest.main()
+        if __name__ == '__main__':
+            unittest.main()
