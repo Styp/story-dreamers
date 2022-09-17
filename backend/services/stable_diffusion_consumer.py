@@ -4,14 +4,17 @@ from io import BytesIO
 
 import requests
 from PIL import Image
+from filecache import filecache
 
 
 class StableDiffusionConsumer(object):
-    def __init__(self):
-        self.session = requests.Session()
-        self.url_path = "http://34.122.121.121/predictions"
 
-    def fetch_image(self, text: str):
+    @staticmethod
+    @filecache(24 * 60 * 60)
+    def fetch_image(text: str):
+        session = requests.Session()
+        url_path = "http://34.122.121.121/predictions"
+
         data = {
             "input": {
                 "prompt": text,
@@ -24,11 +27,12 @@ class StableDiffusionConsumer(object):
                 "seed": 0
             }
         }
-        response = self.session.post(self.url_path, json=data)
+
+        response = session.post(url_path, json=data)
         response.raise_for_status()
 
         for image in response.json().get('output', []):
-            yield image
+            return image
 
     def parse_to_bytesio(self, image_string: str):
         image_data = re.sub('^data:image/.+;base64,', '', image_string)

@@ -11,7 +11,7 @@ from services.prompt_extractor import PromptExtractor
 from services.stable_diffusion_consumer import StableDiffusionConsumer
 
 app = FastAPI()
-
+cache = {}
 origins = ["*"]
 
 app.add_middleware(
@@ -47,7 +47,9 @@ async def base64_from_prompt(payload: PromptPayload) -> JSONResponse:
 @app.post("/promptsFromText")
 async def prompts_from_text(text_payload: TextPayload) -> [Dict]:
     prompt_extractor = PromptExtractor()
+
     prompts = prompt_extractor.extract_paragraphs_with_prompts(text_payload.text)
+    cache[text_payload] = prompts
     return [{"snippet": key, "prompt": value} for key, value in prompts.items()]
 
 

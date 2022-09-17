@@ -5,7 +5,7 @@ from rake_nltk import Rake
 import nltk
 import yake
 from transformers import pipeline
-
+from filecache import filecache
 
 class PromptExtractor:
     MAX_SENTENCE_COUNT = 10
@@ -16,27 +16,36 @@ class PromptExtractor:
         nltk.download('stopwords')
         self.overall_extractor = yake.KeywordExtractor(n=1, dedupLim=0.5, top=20, features=None)
         self.style = style
-        self.summarizer = pipeline("summarization", model="facebook/bart-large-xsum")
 
-    def _extract_prompt_with_nltk(self, text: str) -> str:
+
+    @staticmethod
+    @filecache(24 * 60 * 60)
+    def _extract_prompt_with_nltk(text: str) -> str:
         rake_nltk_var = Rake()
         rake_nltk_var.extract_keywords_from_text(text)
         keyword_extracted = rake_nltk_var.get_ranked_phrases()[0] + rake_nltk_var.get_ranked_phrases()[1]
         prompt = keyword_extracted
         return prompt
 
-    def _extract_prompt_with_yake(self, text: str) -> str:
+    @staticmethod
+    @filecache(24 * 60 * 60)
+    def _extract_prompt_with_yake(text: str) -> str:
         kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.1, top=2, features=None)
         extracted_words = " ".join(
             [kw_extractor.extract_keywords(text)[0][0], kw_extractor.extract_keywords(text)[1][0]])
         return extracted_words
 
-    def _extract_prompt_with_bart(self, text: str) -> str:
-        return self.summarizer(text, min_length=5)[0]["summary_text"]
 
-    def _extract_prompt_with_bart_extended(self, text: str) -> str:
+    @staticmethod
+    @filecache(24 * 60 * 60)
+    def _extract_prompt_with_bart(text: str) -> str:
+        summarizer = pipeline("summarization", model="facebook/bart-large-xsum")
+        return summarizer(text, min_length=5)[0]["summary_text"]
+
+    @staticmethod
+    def _extract_prompt_with_bart_extended(text: str) -> str:
         kw_extractor = yake.KeywordExtractor(n=10, dedupLim=0.8, top=1, features=None)
-        return kw_extractor.extract_keywords(self._extract_prompt_with_bart(text))[0][0]
+        return kw_extractor.extract_keywords(PromptExtractor._extract_prompt_with_bart(text))[0][0]
 
     def _keywords_relevant_overall(self, extracted_keywords: str, whole_text_keywords: [tuple[float, str]]):
         overall_important_keywords = np.array(whole_text_keywords)[:, 0]
@@ -68,7 +77,7 @@ class PromptExtractor:
                     self.add_keywords_to_paragraph_prompts(extracted_keywords, " ".join(paragraph), paragraph_prompts)
                     sentence_counter = 0
                     paragraph = []
-        return self._remove_duplicates(paragraph_prompts)
+        return paragraph_prompts
 
     def extract_keywords(self, paragraph):
         extracted_keywords = self._extract_prompt_with_bart_extended(paragraph)
@@ -81,5 +90,3 @@ class PromptExtractor:
         print("extracted: ", deduplicated_prompt)
         paragraph_prompts[paragraph] = deduplicated_prompt + " " + self.style
 
-    def _remove_duplicates(self, paragraph_prompts: Dict[str, str]):
-        return paragraph_prompts
