@@ -7,7 +7,7 @@ class PromptExtractor:
         nltk.download('punkt')
         nltk.download('stopwords')
 
-    def get_summary(self, text: str) -> str:
+    def extract_prompt(self, text: str) -> str:
         print("input: ", text)
         rake_nltk_var = Rake()
         rake_nltk_var.extract_keywords_from_text(text)

@@ -26,7 +26,7 @@ def file_tokenizer(file_to_test: str, prompt_extractor: PromptExtractor) -> str:
                 line_with_content_counter = 0
                 input = paragraph
                 paragraph = ""
-                yield prompt_extractor.get_summary(input)
+                yield prompt_extractor.extract_prompt(input)
 
 
 def recreate_image_directory():
