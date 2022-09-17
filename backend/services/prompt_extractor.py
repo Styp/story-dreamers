@@ -43,6 +43,7 @@ class PromptExtractor:
         return summarizer(text, min_length=5)[0]["summary_text"]
 
     @staticmethod
+    @filecache(24 * 60 * 60)
     def _extract_prompt_with_bart_extended(text: str) -> str:
         kw_extractor = yake.KeywordExtractor(n=10, dedupLim=0.8, top=1, features=None)
         return kw_extractor.extract_keywords(PromptExtractor._extract_prompt_with_bart(text))[0][0]
