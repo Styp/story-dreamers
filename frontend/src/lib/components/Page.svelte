@@ -65,8 +65,10 @@
                     </div>
                     <div on:click={next} class="absolute top-0 left-0  w-full bg-amber-50 rounded-r-2xl -skew-y-3 {currentPageValue.next?'hover:-skew-y-[4deg] cursor-pointer':''} duration-200 shadow shadow-black/40 origin-top-left">
                         <div class="aspect-h-1 aspect-w-1 shadow-booklet-r">
-                            <div class="skew-y-1 {currentPageValue.next?'hover:skew-y-2':''} duration-200 p-12">
-                                {currentPageValue.snippet}
+                            <div class=" duration-200 p-12 max-w-xl mx-auto">
+                                <p class="font-serif text-lg first-letter:font-king first-letter:text-7xl first-letter:float-left first-letter:mr-4 tracking-wide leading-7">
+                                    {currentPageValue.snippet}
+                                </p>
                             </div>
                         </div>
                     </div>

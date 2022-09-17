@@ -4,7 +4,9 @@ module.exports = {
   theme: {
     fontFamily: {
       body: ['Comfortaa', 'Arial', 'cursive'],
-      heading: ['Montserrat', 'Helvetica', 'Arial', 'sans-serif']
+      heading: ['Montserrat', 'Helvetica', 'Arial', 'sans-serif'],
+      serif: ['Merriweather', 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif'],
+      king: ['Kingthings','Merriweather', 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif']
     },
     extend: {
       colors:{
