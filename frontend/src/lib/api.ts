@@ -1,7 +1,7 @@
 import {currentPageNumber, promptCache} from "./stores";
 import {get} from "svelte/store";
 
-const host = 'http://127.0.0.1:8080'
+const host = 'http://34.91.232.232:8000'
 const textEndpoint = 'promptsFromText' // 'promptsFromText'
 const imageEndpoint = 'base64FromPrompt' // 'base64FromPrompt'
 
