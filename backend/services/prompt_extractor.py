@@ -21,8 +21,8 @@ class PromptExtractor:
 
     def _extract_prompt_with_yake(self, text: str) -> str:
         print("input: ", text)
-        kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.9, top=1, features=None)
-        extracted_words = " ".join(kw_extractor.extract_keywords(text)[:1])
+        kw_extractor = yake.KeywordExtractor(n=3, dedupLim=0.9, top=3, features=None)
+        extracted_words = " ".join([kw_extractor.extract_keywords(text)[0][0], kw_extractor.extract_keywords(text)[1][0]])
         print("extracted:", extracted_words)
         return extracted_words + " " + self.style
 
