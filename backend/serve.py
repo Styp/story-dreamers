@@ -23,7 +23,7 @@ app.add_middleware(
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello World"}
 
 
@@ -44,7 +44,7 @@ def base64_from_prompt(payload: PromptPayload) -> JSONResponse:
     return JSONResponse(content=img_json)
 
 @app.post("/promptsFromText")
-async def prompts_from_text(text_payload: TextPayload) -> [Dict]:
+def prompts_from_text(text_payload: TextPayload) -> [Dict]:
     prompt_extractor = PromptExtractor()
 
     prompts = prompt_extractor.extract_paragraphs_with_prompts(text_payload.text)
