@@ -38,9 +38,13 @@ def main():
     nltk.download('stopwords')
     file_to_test = "golden-goose.txt"
     for sentence_index, sentence in enumerate(file_tokenizer(file_to_test)):
-        images = fetch_image(sentence)
-        for index, image in enumerate(images):
-            image.save(f'images/{sentence_index:03d}-{index:03d}.png')
+        try:
+            images = fetch_image(sentence)
+            for index, image in enumerate(images):
+                image.save(f'images/{sentence_index:03d}-{index:03d}.png')
+        except Exception as e:
+            print(e)
+
 
 
 if __name__ == "__main__":
