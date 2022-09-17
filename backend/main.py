@@ -8,6 +8,7 @@ test_str = "There was a miller whose only inheritance to his three sons was his 
 
 
 def get_summary(text: str) -> str:
+    print("input: ", text)
     rake_nltk_var = Rake()
     rake_nltk_var.extract_keywords_from_text(text)
     keyword_extracted = rake_nltk_var.get_ranked_phrases()[0]
@@ -29,14 +30,17 @@ def file_tokenizer(file_to_test: str) -> str:
             if line.strip():
                 line_with_content_counter += 1
                 paragraph += line
-            if line_with_content_counter == 5:
+            if line_with_content_counter == 3:
                 line_with_content_counter = 0
-                yield get_summary(paragraph)
+                input = paragraph
+                paragraph = ""
+                yield get_summary(input)
+
 
 def main():
     nltk.download('punkt')
     nltk.download('stopwords')
-    file_to_test = "golden-goose.txt"
+    file_to_test = "snowwhite.txt"
     for sentence_index, sentence in enumerate(file_tokenizer(file_to_test)):
         try:
             images = fetch_image(sentence)
