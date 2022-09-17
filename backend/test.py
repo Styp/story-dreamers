@@ -2,7 +2,7 @@ import os
 
 from google.cloud import vision
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-vision-key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join('auth', 'google-vision-key.json')
 
 
 client = vision.ImageAnnotatorClient()
