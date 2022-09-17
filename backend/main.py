@@ -4,7 +4,7 @@ import shutil
 from os import path
 from typing import Dict
 
-from backend.services.prompt_extractor import PromptExtractor
+from services.prompt_extractor import PromptExtractor
 from fetch_images import fetch_image
 
 test_str = "There was a miller whose only inheritance to his three sons was his mill, his donkey, and his cat. The division was soon made. They hired neither a clerk nor an attorney, for they would have eaten up all the poor patrimony. The eldest took the mill, the second the donkey, and the youngest nothing but the cat. + oil painting"

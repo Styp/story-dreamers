@@ -1,7 +1,7 @@
 import unittest
 from os import path
 
-from backend.services.prompt_extractor import PromptExtractor
+from services.prompt_extractor import PromptExtractor
 
 
 class MyTestCase(unittest.TestCase):

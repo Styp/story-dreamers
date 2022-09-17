@@ -28,9 +28,9 @@ async def root():
 
 
 @app.post("/imageFromPromt")
-async def image_from_promt(payload: PromptPayload) -> StreamingResponse:
+def image_from_promt(payload: PromptPayload) -> StreamingResponse:
     consumer = StableDiffusionConsumer()
-    image_bytes = next(consumer.fetch_image(payload.prompt))
+    image_bytes = consumer.fetch_image(payload.prompt)
 
     return StreamingResponse(consumer.parse_to_bytesio(image_bytes), media_type="image/png")
 
