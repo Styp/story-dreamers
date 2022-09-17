@@ -37,7 +37,7 @@
                 <Button on:click={previous}>Previous</Button>
             {/if}
         </div>
-        <div class="col-span-3 flex justify-center">
+        <div class="col-span-3 flex justify-center items-center">
             Page {currentPageNumberValue+1}/{totalPagesValue}
         </div>
         <div class="col-span-3 flex justify-start">
