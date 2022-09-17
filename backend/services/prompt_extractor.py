@@ -39,6 +39,7 @@ class PromptExtractor:
         return importance > 30
 
     def extract_paragraphs_with_prompts(self, whole_text: str) -> Dict[str, str]:
+        print(whole_text)
         paragraph_prompts = {}
         paragraph = []
         sentence_counter = 0

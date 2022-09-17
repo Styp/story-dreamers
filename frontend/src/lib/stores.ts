@@ -13,9 +13,10 @@ export const pages = writable<ProcessedTextItem[]>([])
 
 export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumber], async ([pages, currentPageNumber]) =>{
     if (pages.length) {
+        const image = await get_image(pages[currentPageNumber].prompt)
         return {
             snippet: pages[currentPageNumber].snippet,
-            image: (await get_image(pages[currentPageNumber].prompt))?.image,
+            image: image?.image,
             hasNext: pages.length > currentPageNumber + 1,
             hasPrevious: currentPageNumber > 0
         }

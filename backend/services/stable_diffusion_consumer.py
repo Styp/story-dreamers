@@ -28,8 +28,8 @@ class StableDiffusionConsumer(object):
         response.raise_for_status()
 
         for image in response.json().get('output', []):
-            yield self.parse_image(image)
+            yield image
 
-    def parse_image(self, image_string: str):
+    def parse_to_bytesio(self, image_string: str):
         image_data = re.sub('^data:image/.+;base64,', '', image_string)
         return BytesIO(base64.b64decode(image_data))
