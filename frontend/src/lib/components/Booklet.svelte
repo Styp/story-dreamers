@@ -32,7 +32,7 @@
         }
     }
 </script>
-<div class="aspect-h-1 aspect-w-2">
+<div class="aspect-h-1 aspect-w-2 text-black">
     <div class="grid grid-cols-2 items-stretch">
         <div class="relative w-full group">
             <Page position="left" skew="skew-y-1"></Page>
