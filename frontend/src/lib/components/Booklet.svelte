@@ -8,17 +8,17 @@
 
     currentPage.subscribe((value:any) => {
         currentPageValue=value
-        currentSnippet = cleanSnippet(value.snippet)
+        currentSnippet = cleanSnippet(value?.snippet)
     })
 
     currentPageNumber.subscribe(value => currentPageNumberValue=value)
     totalPages.subscribe(value => totalPagesValue=value)
 
     function cleanSnippet(snippet: string){
-        console.log('original', snippet)
-        const clean =  snippet.replace(/^[^a-zA-Z]*/gi, '')
-        console.log('clean', clean)
-        return clean
+        if(!snippet){
+            return ''
+        }
+        return snippet.replace(/^[^a-zA-Z]*/gi, '')
     }
 
     async function next(){

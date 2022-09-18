@@ -15,7 +15,7 @@ export const loading = writable<boolean>(false)
 
 export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumber], async ([pages, currentPageNumber]) =>{
     if (pages.length) {
-        const image = await get_image(pages[currentPageNumber].prompt)
+        const image = await get_image(pages[currentPageNumber]?.prompt)
         return {
             snippet: pages[currentPageNumber].snippet,
             image: image?.image,
@@ -29,6 +29,7 @@ export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumb
 })
 
 export const preloadImages = asyncDerived([pages], async ([pages]) => {
+    console.log('preload')
     for(const [index, page] of pages.entries()){
         await get_image(pages[index].prompt)
     }
@@ -38,6 +39,6 @@ export const promptCache = writable<{[key: string]: {image: string}}>({})
 
 export function reset_story(){
     text.set('')
-    currentPageNumber.set(0)
     pages.set([])
+    currentPageNumber.set(0)
 }

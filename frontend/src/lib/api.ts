@@ -41,6 +41,7 @@ export async function get_image(prompt: string): Promise<ImagePrompt>{
     const cacheValue = get(promptCache)
     if(cacheValue[prompt]){
         console.log('cache hit')
+        setTimeout(() => loading.set(false),5000)
         return cacheValue[prompt]
     }
     else{

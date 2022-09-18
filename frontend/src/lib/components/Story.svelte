@@ -3,25 +3,7 @@
     import Button from "./Button.svelte";
     import Booklet from "./Booklet.svelte";
 
-    let currentPageValue;
-    let currentPageNumberValue;
-    let totalPagesValue;
-
-    currentPage.subscribe(value => currentPageValue=value)
-    currentPageNumber.subscribe(value => currentPageNumberValue=value)
-    totalPages.subscribe(value => totalPagesValue=value)
     preloadImages.subscribe(() => {})
-    
-    async function next(){
-        if(currentPageValue.hasNext){
-            currentPageNumber.update(n => n+1)
-        }
-    }
-    async function previous(){
-        if(currentPageValue.hasPrevious){
-            currentPageNumber.update(n => n-1)
-        }
-    }
 
     async function reset(){
         reset_story()
