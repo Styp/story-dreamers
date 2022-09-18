@@ -7,8 +7,10 @@
     let currentSnippet;
 
     currentPage.subscribe((value:any) => {
-        currentPageValue=value
-        currentSnippet = cleanSnippet(value?.snippet)
+        if(value){
+            currentPageValue=value
+            currentSnippet = cleanSnippet(value?.snippet)
+        }
     })
 
     currentPageNumber.subscribe(value => currentPageNumberValue=value)
