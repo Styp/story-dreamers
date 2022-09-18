@@ -11,6 +11,8 @@ export const currentPageNumber = writable<number>(0)
 
 export const pages = writable<ProcessedTextItem[]>([])
 
+export const loading = writable<boolean>(false)
+
 export const currentPage = asyncDerived<any,BookletPage>([pages, currentPageNumber], async ([pages, currentPageNumber]) =>{
     if (pages.length) {
         const image = await get_image(pages[currentPageNumber].prompt)

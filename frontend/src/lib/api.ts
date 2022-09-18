@@ -1,4 +1,4 @@
-import {currentPageNumber, promptCache} from "./stores";
+import {currentPageNumber, loading, promptCache} from "./stores";
 import {get} from "svelte/store";
 
 const host = 'http://34.91.232.232:8000'
@@ -61,6 +61,7 @@ export async function get_image(prompt: string): Promise<ImagePrompt>{
         .then(
             response => {
                 promptCache.update(cache => {cache[prompt] = response; return cache});
+                setTimeout(() => loading.set(false),5000)
                 return response}
         )
 }
